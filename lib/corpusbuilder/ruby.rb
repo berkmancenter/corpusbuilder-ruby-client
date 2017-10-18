@@ -2,6 +2,7 @@ require "corpusbuilder/ruby/version"
 
 module Corpusbuilder
   module Ruby
-    # Your code goes here...
+    include ActiveSupport::Configurable
+    Corpusbuilder::Ruby.config.base_url = "https://api.some.corpusbuilder.com/"
   end
 end
