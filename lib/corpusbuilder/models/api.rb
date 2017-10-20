@@ -11,6 +11,11 @@ module Corpusbuilder
         JSON.parse(resp.body)
       end
 
+      def send_document(payload)
+        resp = RestClient.post(Corpusbuilder::Ruby::Api.config.api_url + "/api/documents", payload, headers)
+        JSON.parse(resp.body)
+      end
+
       private
 
       def headers

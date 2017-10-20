@@ -19,30 +19,32 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
     }
   end
 
-  context "POST /api/documents" do 
-    before(:each)  do
-      Corpusbuilder::Ruby::Api.config.api_url = "https://api.some.corpusbuilder.com"
-      Corpusbuilder::Ruby::Api.config.api_version = 1
-      Corpusbuilder::Ruby::Api.config.app_id= 100
-      Corpusbuilder::Ruby::Api.config.token = "a"
-    end
-    
-    let(:url) { "/api/documents" }
-  
-    let(:data_minimal_correct) do
-      {
-        images: [ { id: 1 }, { id: 2 } ],
-        metadata: { title: "Fancy Book" }.to_json
-      }
-    end
+  let(:data_minimal_correct) do
+    {
+      images: [ { id: 1 }, { id: 2 } ],
+      metadata: { title: "Fancy Book" }.to_json
+    }
+  end
 
-    let(:api) {Corpusbuilder::Ruby::Api.new}
+  let(:api) {Corpusbuilder::Ruby::Api.new}
+
+  let(:resp) {double(body: {id: 1, name: 'file.tiff'}.to_json)}
+
+  before(:each)  do
+    Corpusbuilder::Ruby::Api.config.api_url = "https://api.some.corpusbuilder.com"
+    Corpusbuilder::Ruby::Api.config.api_version = 1
+    Corpusbuilder::Ruby::Api.config.app_id= 100
+    Corpusbuilder::Ruby::Api.config.token = "a"
+  end
+
+  ### Images ### 
+  context "POST /api/images" do 
+   
+    let(:url) { "/api/images" }
 
     let(:file) {double('file', :size => 0.5.megabytes, :content_type => 'png', :original_filename => 'rails')}
-
-    let(:resp) {double(body: {id: 1, name: 'file.tiff'}.to_json)}
-
-    it "returns expected result format for a request" do
+    
+    it "returns expected result format for an image post request" do
       allow(RestClient).to receive(:post) { resp }
       expect(api.send_image(file: file, name: 'file.tiff')).to eq({ "id" => 1, "name" => 'file.tiff' })
     end
@@ -53,8 +55,44 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
     end
 
     it "makes request to the intended URL" do
-      expect(RestClient).to receive(:post).with(Corpusbuilder::Ruby::Api.config.api_url + "/api/images", anything, anything).and_return resp
+      expect(RestClient).to receive(:post).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything, anything).and_return resp
       api.send_image(file: file, name: "test.pdf")
     end
+  end
+
+  ### DOCUMENTS ###
+  context "POST /api/documents" do 
+   
+    let(:url) { "/api/documents" }
+  
+    let(:full_document_params) do
+      {
+        images: [ { id: "1" }, { id: "2" } ],
+        metadata: { title: "Fancy Book",
+                    author: "Steve Stephens",
+                    date: "2017-10-20",
+                    editor: "Dave Davids",
+                    license: "License A",
+                    notes: "This is a note.",
+                    publisher: "Will Williams"
+                  }.to_json
+      }
+    end
+
+    it "passes the intended headers for document creation" do
+      expect(RestClient).to receive(:post).with(anything, anything, headers).and_return resp
+      api.send_document(data_minimal_correct)
+    end
+
+    it "sends the required and optional params for document creation" do
+      expect(RestClient).to receive(:post).with(anything, full_document_params, anything).and_return resp
+      api.send_document(full_document_params)
+    end
+
+    it "requests the intended URL for document creation" do
+      expect(RestClient).to receive(:post).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything, anything).and_return resp
+      api.send_document(data_minimal_correct)
+    end
+
   end
 end
