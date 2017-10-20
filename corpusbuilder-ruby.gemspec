@@ -6,8 +6,8 @@ require "corpusbuilder/ruby/version"
 Gem::Specification.new do |spec|
   spec.name          = "corpusbuilder-ruby"
   spec.version       = Corpusbuilder::Ruby::VERSION
-  spec.authors       = ["Kamil Ciemniewski"]
-  spec.email         = ["kamil@endpoint.com"]
+  spec.authors       = ["Matt Galvin"]
+  spec.email         = ["mgalvin@endpoint.com"]
 
   spec.summary       = %q{A client for the Corpus Builder API server}
   spec.description   = %q{A client for the Corpus Builder API server}
