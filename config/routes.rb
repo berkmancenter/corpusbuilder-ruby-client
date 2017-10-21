@@ -1,3 +1,5 @@
 Rails.application.routes.draw do
-  resources 'corpusbuilder'
+  scope :corpusbuilder, module: 'api', constraints: { format: 'json' } do
+    resources :documents, :images
+  end
 end
