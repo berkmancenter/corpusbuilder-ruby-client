@@ -22,7 +22,12 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+Add some information to a configuration file (after application is initialized):
+## Note that for setting the api_ul, trailing slashes are not valid ("http://yourwebsite.com/")
+* Corpusbuilder::Ruby::Api.config.api_url = "http://yourwebsite.com"
+* Corpusbuilder::Ruby::Api.config.api_version = 1
+* Corpusbuilder::Ruby::Api.config.app_id = "your app id"
+* Corpusbuilder::Ruby::Api.config.token = "your token"
 
 ## Development
 
