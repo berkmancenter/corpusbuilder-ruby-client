@@ -37,7 +37,7 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
     Corpusbuilder::Ruby::Api.config.token = "a"
   end
 
-  ### Images ### 
+  ### IMAGES ### 
   context "POST /api/images" do 
    
     let(:url) { "/api/images" }

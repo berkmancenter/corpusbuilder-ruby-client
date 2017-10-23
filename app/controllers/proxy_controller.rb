@@ -1,17 +1,9 @@
 class ProxyController < ApplicationController
 
   def speak_with_cb
-    render :text => params
+    http_verb = env["REQUEST_METHOD"].downcase
+    headers = Corpusbuilder::Ruby::Api.new.get_headers
+    url = Corpusbuilder::Ruby::Api.config.api_url + '/api' + request.original_url.split("corpusbuilder")[1]
+    RestClient.http_verb(url,params,headers)
   end
-
-  def documents
-    corpusbuilder = Corpusbuilder::Ruby::Api.new
-    corpusbuilder.send_document(params[:document])
-  end
-
-  def images
-    corpusbuilder = Corpusbuilder::Ruby::Api.new
-    corpusbuilder.send_images(params)
-  end
-
 end

@@ -16,6 +16,9 @@ module Corpusbuilder
         JSON.parse(resp.body)
       end
 
+      def get_headers
+        headers
+      end
       private
 
       def headers
