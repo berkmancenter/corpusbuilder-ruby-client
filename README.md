@@ -21,9 +21,11 @@ Or install it yourself as:
     $ gem install corpusbuilder-ruby
 
 ## Usage
+Mount the Gem's routes in the host application:
+* mount Corpusbuilder::Ruby::Engine, at: "/corpusbuilder"
 
 Add some information to a configuration file (after application is initialized):
-## Note that for setting the api_ul, trailing slashes are not valid ("http://yourwebsite.com/")
+# Note that for setting the api_ul, trailing slashes are not valid ("http://yourwebsite.com/")
 * Corpusbuilder::Ruby::Api.config.api_url = "http://yourwebsite.com"
 * Corpusbuilder::Ruby::Api.config.api_version = 1
 * Corpusbuilder::Ruby::Api.config.app_id = "your app id"
