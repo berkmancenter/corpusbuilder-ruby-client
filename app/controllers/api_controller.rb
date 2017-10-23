@@ -1,9 +1,5 @@
-module Corpusbuilder
-  module Ruby
-    class ApiController < ApplicationController
-      def proxy_corpusbuilder
-        render :text => "Hello"
-      end
-    end
+class ApiController < ApplicationController
+  def proxy
+    render :text => "Hello"
   end
 end

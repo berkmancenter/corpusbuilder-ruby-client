@@ -1,3 +1,3 @@
 Rails.application.routes.draw do
-  match 'corpusbuilder/*', :to => 'api#proxy_corpusbuilder', via: [:all]
+  match ':corpusbuilder((/:action(/:id(.:format))))', :to => 'api#proxy', via: [:all]
 end
