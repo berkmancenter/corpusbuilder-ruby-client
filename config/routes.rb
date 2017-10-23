@@ -1,5 +1,3 @@
 Rails.application.routes.draw do
-  scope :corpusbuilder, module: 'api', constraints: { format: 'json' } do
-    resources :documents, :images
-  end
+  match 'corpusbuilder/*', :to => 'api#proxy_corpusbuilder', via: [:all]
 end
