@@ -95,4 +95,28 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
     end
 
   end
+
+  ### EDITORS ### 
+  context "POST /api/editors" do 
+   
+    let(:url) { "/api/editors" }
+
+    let(:file) {double('file', :size => 0.5.megabytes, :content_type => 'png', :original_filename => 'rails')}
+
+    it "passes the intended headers for editor creation" do
+      expect(RestClient).to receive(:post).with(anything, anything, headers).and_return resp
+      api.send_editor(data_minimal_correct)
+    end
+=begin
+    it "sends the required and optional params for editor creation" do
+      expect(RestClient).to receive(:post).with(anything, full_document_params, anything).and_return resp
+      api.send_editor(full_document_params)
+    end
+
+    it "requests the intended URL for editor creation" do
+      expect(RestClient).to receive(:post).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything, anything).and_return resp
+      api.send_editor(data_minimal_correct)
+    end
+=end
+  end
 end
