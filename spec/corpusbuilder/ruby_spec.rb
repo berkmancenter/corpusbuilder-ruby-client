@@ -81,17 +81,17 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
 
     it "passes the intended headers for document creation" do
       expect(RestClient).to receive(:post).with(anything, anything, headers).and_return resp
-      api.send_document(data_minimal_correct)
+      api.create_document(data_minimal_correct)
     end
 
     it "sends the required and optional params for document creation" do
       expect(RestClient).to receive(:post).with(anything, full_document_params, anything).and_return resp
-      api.send_document(full_document_params)
+      api.create_document(full_document_params)
     end
 
     it "requests the intended URL for document creation" do
       expect(RestClient).to receive(:post).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything, anything).and_return resp
-      api.send_document(data_minimal_correct)
+      api.create_document(data_minimal_correct)
     end
 
   end
@@ -111,16 +111,16 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
 
     it "passes the intended headers for editor creation" do
       expect(RestClient).to receive(:post).with(anything, anything, headers).and_return resp
-      api.send_editor(full_editor_params)
+      api.create_editor(full_editor_params)
     end
 
     it "sends the required and optional params for editor creation" do
       expect(RestClient).to receive(:post).with(anything, full_editor_params, anything).and_return resp
-      api.send_editor(full_editor_params)
+      api.create_editor(full_editor_params)
     end
     it "requests the intended URL for editor creation" do
       expect(RestClient).to receive(:post).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything, anything).and_return resp
-      api.send_editor(full_editor_params)
+      api.create_editor(full_editor_params)
     end
   end
 end
