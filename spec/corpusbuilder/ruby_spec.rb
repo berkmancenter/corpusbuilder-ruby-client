@@ -103,7 +103,7 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
 
     let(:full_editor_params) do
       {
-        images: "editor@test.com",
+        email: "editor@test.com",
         first_name: "Steve",
         last_name: "Stephenson"
       }
