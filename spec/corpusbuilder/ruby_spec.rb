@@ -49,12 +49,12 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       expect(api.send_image(file: file, name: 'file.tiff')).to eq({ "id" => 1, "name" => 'file.tiff' })
     end
 
-    it "passes the intended headers" do
+    it "passes the intended headers for image creation" do
       expect(RestClient).to receive(:post).with(anything, { file: file, name: "test.pdf"}, headers).and_return resp
       api.send_image(file: file, name: "test.pdf")
     end
 
-    it "makes request to the intended URL" do
+    it "makes request to the intended URL for image creation" do
       expect(RestClient).to receive(:post).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything, anything).and_return resp
       api.send_image(file: file, name: "test.pdf")
     end
@@ -101,22 +101,26 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
    
     let(:url) { "/api/editors" }
 
-    let(:file) {double('file', :size => 0.5.megabytes, :content_type => 'png', :original_filename => 'rails')}
+    let(:full_editor_params) do
+      {
+        images: "editor@test.com",
+        first_name: "Steve",
+        last_name: "Stephenson"
+      }
+    end
 
     it "passes the intended headers for editor creation" do
       expect(RestClient).to receive(:post).with(anything, anything, headers).and_return resp
-      api.send_editor(data_minimal_correct)
-    end
-=begin
-    it "sends the required and optional params for editor creation" do
-      expect(RestClient).to receive(:post).with(anything, full_document_params, anything).and_return resp
-      api.send_editor(full_document_params)
+      api.send_editor(full_editor_params)
     end
 
+    it "sends the required and optional params for editor creation" do
+      expect(RestClient).to receive(:post).with(anything, full_editor_params, anything).and_return resp
+      api.send_editor(full_editor_params)
+    end
     it "requests the intended URL for editor creation" do
       expect(RestClient).to receive(:post).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything, anything).and_return resp
-      api.send_editor(data_minimal_correct)
+      api.send_editor(full_editor_params)
     end
-=end
   end
 end
