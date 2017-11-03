@@ -25,11 +25,18 @@ Mount the Gem's routes in the host application:
 * mount Corpusbuilder::Ruby::Engine, at: "/corpusbuilder"
 
 Add some information to a configuration file (after application is initialized):
-# Note that for setting the api_ul, trailing slashes are not valid ("http://yourwebsite.com/")
+### Note that for setting the api_ul, trailing slashes are not valid ("http://yourwebsite.com/")
 * Corpusbuilder::Ruby::Api.config.api_url = "http://yourwebsite.com"
 * Corpusbuilder::Ruby::Api.config.api_version = 1
 * Corpusbuilder::Ruby::Api.config.app_id = "your app id"
 * Corpusbuilder::Ruby::Api.config.token = "your token"
+
+Create a Corpusbuilder::Ruby::Api instance
+* $ api = Corpusbuilder::Ruby::Api.new
+** api.send_image(params) = Makes request to /api/images 
+** api.create_document(params) = Makes request to /api/documents
+** api.get_document)status(params) = Makes request to /api/documents/:id/status
+** api.create_editor(params) = Makes request to /api/editor
 
 ## Development
 

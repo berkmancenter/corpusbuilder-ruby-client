@@ -7,13 +7,17 @@ module Corpusbuilder
       include ActiveSupport::Configurable
 
       def send_image(payload)
-        resp = RestClient.post(Corpusbuilder::Ruby::Api.config.api_url + "/api/images", payload.to_json, headers)
-        
+        resp = RestClient.post(Corpusbuilder::Ruby::Api.config.api_url + "/api/images", payload, headers)
         JSON.parse(resp.body)
       end
 
       def create_document(payload)
         resp = RestClient.post(Corpusbuilder::Ruby::Api.config.api_url + "/api/documents", payload, headers)
+        JSON.parse(resp.body)
+      end
+
+      def get_document_status(document_id)
+        resp = RestClient.get(Corpusbuilder::Ruby::Api.config.api_url + "/api/documents/#{document_id}/status", headers)
         JSON.parse(resp.body)
       end
 

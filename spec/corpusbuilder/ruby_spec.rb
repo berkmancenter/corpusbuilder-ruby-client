@@ -14,7 +14,7 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
   let(:headers) do
     {
       "Accept" => "application/vnd.corpus-builder-v1+json",
-      "X-App-Id" => 100,
+      "X-App-ID" => 100,
       "X-Token" => "a"
     }
   end
@@ -61,6 +61,17 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
   end
 
   ### DOCUMENTS ###
+  context "GET /api/documents/:id/status" do 
+
+    let(:document_id) {"f1d7c6c3-2560-4a09-88af-48308ec51acd"}
+    let(:url) { "/api/documents/#{document_id}/status" }
+
+    it "sends document id to intended URL for retrieving document status" do
+      expect(RestClient).to receive(:get).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything).and_return resp
+      api.get_document_status(document_id)
+    end
+  end
+
   context "POST /api/documents" do 
    
     let(:url) { "/api/documents" }
