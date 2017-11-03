@@ -11,6 +11,13 @@ end
 
 RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
 
+  before(:each)  do
+    Corpusbuilder::Ruby::Api.config.api_url = "https://api.some.corpusbuilder.com"
+    Corpusbuilder::Ruby::Api.config.api_version = 1
+    Corpusbuilder::Ruby::Api.config.app_id= 100
+    Corpusbuilder::Ruby::Api.config.token = "a"
+  end
+
   let(:headers) do
     {
       "Accept" => "application/vnd.corpus-builder-v1+json",
@@ -30,12 +37,7 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
 
   let(:resp) {double(body: {id: 1, name: 'file.tiff'}.to_json)}
 
-  before(:each)  do
-    Corpusbuilder::Ruby::Api.config.api_url = "https://api.some.corpusbuilder.com"
-    Corpusbuilder::Ruby::Api.config.api_version = 1
-    Corpusbuilder::Ruby::Api.config.app_id= 100
-    Corpusbuilder::Ruby::Api.config.token = "a"
-  end
+  let(:document_id) {"f1d7c6c3-2560-4a09-88af-48308ec51acd"}
 
   ### IMAGES ### 
   context "POST /api/images" do 
@@ -61,12 +63,19 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
   end
 
   ### DOCUMENTS ###
-  context "GET /api/documents/:id/status" do 
+  context "GET /api/documents/:id" do 
+    let(:url) { "/api/documents/#{document_id}" }
 
-    let(:document_id) {"f1d7c6c3-2560-4a09-88af-48308ec51acd"}
+    it "requests intended URL for retrieving a document" do
+      expect(RestClient).to receive(:get).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything).and_return resp
+      api.get_document(document_id)
+    end
+  end
+
+  context "GET /api/documents/:id/status" do 
     let(:url) { "/api/documents/#{document_id}/status" }
 
-    it "sends document id to intended URL for retrieving document status" do
+    it "requests intended URL for retrieving document status" do
       expect(RestClient).to receive(:get).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything).and_return resp
       api.get_document_status(document_id)
     end
