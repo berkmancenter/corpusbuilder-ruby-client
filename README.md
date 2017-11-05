@@ -33,11 +33,14 @@ Add some information to a configuration file (after application is initialized):
 
 Create a Corpusbuilder::Ruby::Api instance
 * $ api = Corpusbuilder::Ruby::Api.new
-** api.send_image(params) = Makes request to /api/images 
-** api.create_document(params) = Makes request to /api/documents
-** api.get_document)status(params) = Makes request to /api/documents/:id/status
-** api.create_editor(params) = Makes request to /api/editor
 
+* api.send_image(params) = Makes request to /api/images 
+* api.create_editor(params) = Makes request to /api/editor
+
+* api.create_document(params) = Makes request to /api/documents
+* api.get_document_status(params) = Makes request to /api/documents/:id/status
+* api.get_document(params) = Makes request to /api/documents
+* api.get_documents = Makes request to /api/documents
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

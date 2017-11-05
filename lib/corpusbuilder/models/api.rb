@@ -16,6 +16,11 @@ module Corpusbuilder
         JSON.parse(resp.body)
       end
 
+      def get_documents
+        resp = RestClient.get(Corpusbuilder::Ruby::Api.config.api_url + "/api/documents/", headers)
+        JSON.parse(resp.body)
+      end
+
       def get_document_status(document_id)
         resp = RestClient.get(Corpusbuilder::Ruby::Api.config.api_url + "/api/documents/#{document_id}/status", headers)
         JSON.parse(resp.body)

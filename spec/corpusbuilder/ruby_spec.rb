@@ -63,11 +63,30 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
   end
 
   ### DOCUMENTS ###
+  context "GET /api/documents/" do 
+    let(:url) { "/api/documents/" }
+
+    it "requests intended URL for retrieving a document" do
+      expect(RestClient).to receive(:get).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything).and_return resp
+      api.get_documents
+    end
+
+    it "passes the intended headers for retreiving documents" do
+      expect(RestClient).to receive(:get).with(anything, headers).and_return resp
+      api.get_documents
+    end
+  end
+
   context "GET /api/documents/:id" do 
     let(:url) { "/api/documents/#{document_id}" }
 
     it "requests intended URL for retrieving a document" do
       expect(RestClient).to receive(:get).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything).and_return resp
+      api.get_document(document_id)
+    end
+
+    it "passes the intended headers for retreiving a document" do
+      expect(RestClient).to receive(:get).with(anything, headers).and_return resp
       api.get_document(document_id)
     end
   end
@@ -77,6 +96,11 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
 
     it "requests intended URL for retrieving document status" do
       expect(RestClient).to receive(:get).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything).and_return resp
+      api.get_document_status(document_id)
+    end
+
+    it "passes the intended headers for retreiving a document's status" do
+      expect(RestClient).to receive(:get).with(anything, headers).and_return resp
       api.get_document_status(document_id)
     end
   end
