@@ -105,6 +105,20 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
     end
   end
 
+  context "GET /api/documents/:id/branches" do 
+    let(:url) { "/api/documents/#{document_id}/branches" }
+
+    it "requests intended URL for retrieving document branches" do
+      expect(RestClient).to receive(:get).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything).and_return resp
+      api.get_document_branches(document_id)
+    end
+
+    it "passes the intended headers for retreiving a document's branches" do
+      expect(RestClient).to receive(:get).with(anything, headers).and_return resp
+      api.get_document_branches(document_id)
+    end
+  end
+
   context "POST /api/documents" do 
    
     let(:url) { "/api/documents" }

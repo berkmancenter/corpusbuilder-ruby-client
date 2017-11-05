@@ -21,13 +21,18 @@ module Corpusbuilder
         JSON.parse(resp.body)
       end
 
+      def get_document(document_id)
+        resp = RestClient.get(Corpusbuilder::Ruby::Api.config.api_url + "/api/documents/#{document_id}", headers)
+        JSON.parse(resp.body)
+      end
+
       def get_document_status(document_id)
         resp = RestClient.get(Corpusbuilder::Ruby::Api.config.api_url + "/api/documents/#{document_id}/status", headers)
         JSON.parse(resp.body)
       end
 
-      def get_document(document_id)
-        resp = RestClient.get(Corpusbuilder::Ruby::Api.config.api_url + "/api/documents/#{document_id}", headers)
+      def get_document_branches(document_id)
+        resp = RestClient.get(Corpusbuilder::Ruby::Api.config.api_url + "/api/documents/#{document_id}/branches", headers)
         JSON.parse(resp.body)
       end
 

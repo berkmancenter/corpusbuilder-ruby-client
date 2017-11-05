@@ -39,6 +39,7 @@ Create a Corpusbuilder::Ruby::Api instance
 
 * api.create_document(params) = Makes request to /api/documents
 * api.get_document_status(params) = Makes request to /api/documents/:id/status
+* api.get_document_branches(params) = Makes request to /api/documents/:id/branches
 * api.get_document(params) = Makes request to /api/documents
 * api.get_documents = Makes request to /api/documents
 ## Development
