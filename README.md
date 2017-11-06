@@ -42,6 +42,10 @@ Create a Corpusbuilder::Ruby::Api instance
 * api.get_document_branches(params) = Makes request to /api/documents/:id/branches
 * api.get_document(params) = Makes request to /api/documents
 * api.get_documents = Makes request to /api/documents
+
+* api.create_document_branch(document_id, editor_id, params) = Makes request to /api/documents/:id/branches 
+  The editor_id must be created in a Corpusbuilder, then passed to the create_document_branch function from the
+  Gem's host application
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

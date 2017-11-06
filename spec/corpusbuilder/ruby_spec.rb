@@ -108,7 +108,7 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
   context "GET /api/documents/:id/branches" do 
     let(:url) { "/api/documents/#{document_id}/branches" }
 
-    it "requests intended URL for retrieving document branches" do
+    it "requests intended URL and passes document id for retrieving document branches" do
       expect(RestClient).to receive(:get).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything).and_return resp
       api.get_document_branches(document_id)
     end
@@ -151,7 +151,41 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       expect(RestClient).to receive(:post).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything, anything).and_return resp
       api.create_document(data_minimal_correct)
     end
+  end
 
+  context "POST /api/documents/:id/branches" do 
+    let(:url) { "/api/documents/#{document_id}/branches" }
+    let(:headers) do
+      {
+        "Accept" => "application/vnd.corpus-builder-v1+json",
+        "X-App-ID" => 100,
+        "X-Token" => "a",
+        "X-Editor-Id" => "702faf22-12e3-4bfa-8b35-a911e42f0a1b"
+      }
+    end
+
+    let(:params) do 
+      { revision: "master",
+        name: "development"
+      }
+    end
+
+    let(:editor_id) { "702faf22-12e3-4bfa-8b35-a911e42f0a1b" }
+
+    it "posts to the intended URL and passes document id for creating document branches" do
+      expect(RestClient).to receive(:post).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything, anything).and_return resp
+      api.create_document_branch(document_id, editor_id, params)
+    end
+
+    it "sends the required params for document branch creation" do
+      expect(RestClient).to receive(:post).with(anything, params, anything).and_return resp
+      api.create_document_branch(document_id, editor_id, params)
+    end
+
+    it "passes the intended headers for creating a document branch" do
+      expect(RestClient).to receive(:post).with(anything, anything, headers).and_return resp
+      api.create_document_branch(document_id, editor_id, params)
+    end
   end
 
   ### EDITORS ### 
