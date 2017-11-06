@@ -39,6 +39,8 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
 
   let(:document_id) {"f1d7c6c3-2560-4a09-88af-48308ec51acd"}
 
+  let(:editor_id) { "702faf22-12e3-4bfa-8b35-a911e42f0a1b" }
+
   ### IMAGES ### 
   context "POST /api/images" do 
    
@@ -170,7 +172,6 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       }
     end
 
-    let(:editor_id) { "702faf22-12e3-4bfa-8b35-a911e42f0a1b" }
 
     it "posts to the intended URL and passes document id for creating document branches" do
       expect(RestClient).to receive(:post).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything, anything).and_return resp
@@ -185,6 +186,29 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
     it "passes the intended headers for creating a document branch" do
       expect(RestClient).to receive(:post).with(anything, anything, headers).and_return resp
       api.create_document_branch(document_id, editor_id, params)
+    end
+  end
+
+  context "PUT /api/documents/:id/:branch/merge" do
+    let(:branch) {"master"}
+    let(:url) { "/api/documents/#{document_id}/#{branch}/merge" }
+    let(:params) do
+      { other_branch: "development"}
+    end
+
+    it "puts to the intended URL and passes a document id for merging a document's branches" do
+      expect(RestClient).to receive(:put).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything, anything).and_return resp
+      api.merge_document_branches(document_id, branch, params)
+    end
+
+    it "sends the required params for merging branches" do
+      expect(RestClient).to receive(:put).with(anything, params, anything).and_return resp
+      api.merge_document_branches(document_id, branch, params)
+    end
+
+    it "passes the intended headers for merging branches" do
+      expect(RestClient).to receive(:put).with(anything, anything, headers).and_return resp
+      api.merge_document_branches(document_id, branch, params)
     end
   end
 

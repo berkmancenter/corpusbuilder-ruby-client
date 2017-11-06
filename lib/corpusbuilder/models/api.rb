@@ -44,6 +44,13 @@ module Corpusbuilder
         JSON.parse(resp.body)
       end
 
+      def merge_document_branches(document_id, branch, payload)
+        resp = RestClient.put(Corpusbuilder::Ruby::Api.config.api_url + "/api/documents/#{document_id}/#{branch}/merge",
+                              payload,
+                              headers)
+        JSON.parse(resp.body)
+      end
+
       def create_editor(payload)
         resp = RestClient.post(Corpusbuilder::Ruby::Api.config.api_url + "/api/editors", payload, headers)
         JSON.parse(resp.body)
