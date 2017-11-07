@@ -269,6 +269,39 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
     end
   end
 
+  context "PUT /api/documents/:id/:revision/tree" do
+    let(:url) { "/api/documents/#{document_id}/#{revision_id}/tree" }
+    let(:params) do
+      { graphemes: [ id: "zxcxzc",
+                  value: "qwewqe",
+         surface_number: 1,
+                 delete: false,
+                   area: { ulx: "abc",
+                           uly: "def",
+                           lrx: "ghi",
+                           lry: "jkl"
+                         }
+                   ]
+      }
+    end
+
+    it "requests the intended URL to add corrections to a given revision" do
+      expect(RestClient).to receive(:put).with(Corpusbuilder::Ruby::Api.config.api_url + url,
+                                               anything,
+                                               anything).and_return resp
+      api.update_document_revision(document_id, revision_id, params)
+    end
+
+    it "passess the required optional params to add corrections to a given revision" do
+      expect(RestClient).to receive(:put).with(anything, params, anything).and_return resp
+      api.update_document_revision(document_id, revision_id, params)
+    end
+
+    it "passes the intended headers to add corrections to a given revision" do
+      expect(RestClient).to receive(:put).with(anything, anything, headers).and_return resp
+      api.update_document_revision(document_id, revision_id, params)
+    end
+  end
   ### EDITORS ### 
   context "POST /api/editors" do 
    

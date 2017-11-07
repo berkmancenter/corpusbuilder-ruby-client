@@ -51,6 +51,18 @@ Create a Corpusbuilder::Ruby::Api instance
   optional_params = {surface_number: int, area: {ulx: int, uly: int, lrx: int, lry: int}}
 * api.get_document_revision_diff(document_id, revision_id, optional params) where
   optional_params = {other_revision: string}}
+* api.update_document_revision(document_id, revision_id, optional params) where
+  optional_params =       { graphemes: [ id: string,
+                                      value: string,
+                             surface_number: int,
+                                     delete: boolean,
+                                       area: { ulx: string,
+                                               uly: string,
+                                               lrx: string,
+                                               lry: string
+                                             }
+                                       ]
+                          } 
 
 ## Development
 

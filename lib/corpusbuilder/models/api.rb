@@ -53,13 +53,20 @@ module Corpusbuilder
 
       def get_document_revision_tree(document_id, revision_id, payload={})
         #There is a bug in RestClient which prevents the sending of params AND headers in a GET request, thus the params must be passed with the headers
+        # See RestCliet issue 397
         resp = RestClient.get(Corpusbuilder::Ruby::Api.config.api_url + "/api/documents/#{document_id}/#{revision_id}/tree", headers.merge!(:params => payload))
         JSON.parse(resp.body)
       end
 
       def get_document_revision_diff(document_id, revision_id, payload={})
         #There is a bug in RestClient which prevents the sending of params AND headers in a GET request, thus the params must be passed with the headers
+        # See RestClient issue 397
         resp = RestClient.get(Corpusbuilder::Ruby::Api.config.api_url + "/api/documents/#{document_id}/#{revision_id}/diff", headers.merge!(:params => payload))
+        JSON.parse(resp.body)
+      end
+
+      def update_document_revision(document_id, revision_id, payload)
+        resp = RestClient.put(Corpusbuilder::Ruby::Api.config.api_url + "/api/documents/#{document_id}/#{revision_id}/tree", payload, headers)
         JSON.parse(resp.body)
       end
 
