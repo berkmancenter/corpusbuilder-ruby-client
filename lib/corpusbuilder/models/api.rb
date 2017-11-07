@@ -51,6 +51,11 @@ module Corpusbuilder
         JSON.parse(resp.body)
       end
 
+      def get_document_revision_tree(document_id, revision_id, payload={})
+        resp = RestClient.get(Corpusbuilder::Ruby::Api.config.api_url + "/api/documents/#{document_id}/#{revision_id}/tree", payload, headers)
+        JSON.parse(resp.body)
+      end
+
       def create_editor(payload)
         resp = RestClient.post(Corpusbuilder::Ruby::Api.config.api_url + "/api/editors", payload, headers)
         JSON.parse(resp.body)

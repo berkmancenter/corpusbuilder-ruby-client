@@ -212,6 +212,36 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
     end
   end
 
+  context "Get /api/documents/:id/:revision/tree" do
+    let(:revision_id) { "fa8aae14-6dcd-4860-979a-ccafa97b3881" }
+    let(:url) { "/api/documents/#{document_id}/#{revision_id}/tree" }
+    let(:optional_params) do
+      {
+        surface_number: 1,
+        area: { ulx: 2,
+                uly: 3,
+                lrx: 4,
+                lry: 5
+              }
+      }
+    end
+
+    it "requests the intended URL to get a revision tree" do
+      expect(RestClient).to receive(:get).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything, anything).and_return resp
+      api.get_document_revision_tree(document_id, revision_id)
+    end
+
+    it "sends the optional params to get a revision tree" do
+      expect(RestClient).to receive(:get).with(anything, optional_params, anything).and_return resp
+      api.get_document_revision_tree(document_id, revision_id, optional_params)
+    end
+
+    it "passes the intended headers to get a revision tree" do
+      expect(RestClient).to receive(:get).with(anything, anything, headers).and_return resp
+      api.get_document_revision_tree(document_id, revision_id)
+    end
+  end
+
   ### EDITORS ### 
   context "POST /api/editors" do 
    
