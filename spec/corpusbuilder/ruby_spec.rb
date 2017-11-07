@@ -41,6 +41,8 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
 
   let(:editor_id) { "702faf22-12e3-4bfa-8b35-a911e42f0a1b" }
 
+  let(:revision_id) { "fa8aae14-6dcd-4860-979a-ccafa97b3881" }
+
   ### IMAGES ### 
   context "POST /api/images" do 
    
@@ -213,7 +215,6 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
   end
 
   context "Get /api/documents/:id/:revision/tree" do
-    let(:revision_id) { "fa8aae14-6dcd-4860-979a-ccafa97b3881" }
     let(:url) { "/api/documents/#{document_id}/#{revision_id}/tree" }
     let(:optional_params) do
       {
@@ -227,18 +228,44 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
     end
 
     it "requests the intended URL to get a revision tree" do
-      expect(RestClient).to receive(:get).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything, anything).and_return resp
+      expect(RestClient).to receive(:get).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything).and_return resp
       api.get_document_revision_tree(document_id, revision_id)
     end
 
+    #Merging the params into the headers is related to a RestClient bug, see RestClient issue 397
     it "sends the optional params to get a revision tree" do
-      expect(RestClient).to receive(:get).with(anything, optional_params, anything).and_return resp
+      expect(RestClient).to receive(:get).with(anything, headers.merge!(:params => optional_params)).and_return resp
       api.get_document_revision_tree(document_id, revision_id, optional_params)
     end
 
+    #Merging the params into the headers is related to a RestClient bug, see RestClient issue 397
     it "passes the intended headers to get a revision tree" do
-      expect(RestClient).to receive(:get).with(anything, anything, headers).and_return resp
+      expect(RestClient).to receive(:get).with(anything, headers.merge!(:params => {})).and_return resp
       api.get_document_revision_tree(document_id, revision_id)
+    end
+  end
+
+  context "Get /api/documents/:id/:revision/diff" do
+    let(:url) { "/api/documents/#{document_id}/#{revision_id}/diff" }
+    let(:optional_param) do
+      { other_revision: "version_two"}
+    end
+
+    it "requests the intended URL to get a revision diff" do
+      expect(RestClient).to receive(:get).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything).and_return resp
+      api.get_document_revision_diff(document_id, revision_id)
+    end
+
+    #Merging the params into the headers is related to a RestClient bug, see RestClient issue 397
+    it "sends the optional params to get a revision diff" do
+      expect(RestClient).to receive(:get).with(anything, headers.merge!(:params => optional_param)).and_return resp
+      api.get_document_revision_diff(document_id, revision_id, optional_param)
+    end
+
+    #Merging the params into the headers is related to a RestClient bug, see RestClient issue 397
+    it "passes the intended headers to get a revision diff" do
+      expect(RestClient).to receive(:get).with(anything, headers.merge!(:params => {})).and_return resp
+      api.get_document_revision_diff(document_id, revision_id)
     end
   end
 

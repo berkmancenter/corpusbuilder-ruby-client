@@ -49,6 +49,8 @@ Create a Corpusbuilder::Ruby::Api instance
 * api.merge_document_branches(document_id, current_branch_name, {"other_branch":"your_other_branch"}) = Makes request to /api/documents/:id/:branch/merge
 * api.get_document_revision_tree(document_id, revision_id or branch name, optional params) where
   optional_params = {surface_number: int, area: {ulx: int, uly: int, lrx: int, lry: int}}
+* api.get_document_revision_diff(document_id, revision_id, optional params) where
+  optional_params = {other_revision: string}}
 
 ## Development
 
