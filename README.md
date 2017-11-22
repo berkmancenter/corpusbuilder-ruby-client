@@ -40,7 +40,7 @@ Create a Corpusbuilder::Ruby::Api instance
   where params = {email: string, first_name: string, last_name: string}
 
 * api.create_document(params) = Makes request to /api/documents
-  where params = {images: [{id: int},{id: int}], metadata: {title: string, author: string, date: date, editor: string, license: string, notes: string, publisher: string} 
+  where params = {images: [{id: UUID string},{id: UUID string}], metadata: {title: string, author: string, date: date, editor: string, license: string, notes: string, publisher: string}, editor_email: string}
 * api.get_document_status(document_id) = Makes request to /api/documents/:id/status
 * api.get_document_branches(document_id) = Makes request to /api/documents/:id/branches
 * api.get_document(document_id) = Makes request to /api/documents
