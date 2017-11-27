@@ -9,7 +9,7 @@ module Corpusbuilder
       def send_image(payload)
         unless payload.is_a?(Hash) && (payload[:file].present? || payload['file'].present?)
           Rails.logger.error "Error: You are missing the required param for creating an image, call send_image(file: your_file, name: string (optional))"
-          return
+          raise "Missing required params"
         end
 
         begin
@@ -27,7 +27,7 @@ module Corpusbuilder
                (payload[:editor_email].present? || payload['editor_email'].present?)
 
           Rails.logger.error "Error: You are missing the required param(s) for creating a document, call create_document({images: [{id: UUID string},{id: UUID string...}], metadata: {title: string, author: string (optional), date: date (optional), editor: string (optional), license: string (optional), notes: string (optional), publisher: string (optional)}, editor_email: string})"
-          return
+          raise "Missing required params"
         end
 
         begin
@@ -52,7 +52,7 @@ module Corpusbuilder
       def get_document(document_id)
         unless document_id.is_a? String
           Rails.logger.error "Error: Did you pass get_document a document id as a UUID String?"
-          return
+          raise "Missing required params"
         end
 
         begin
@@ -67,7 +67,7 @@ module Corpusbuilder
       def get_document_status(document_id)
         unless document_id.is_a? String
           Rails.logger.error "Error: Did you pass get_document_status a document id as a UUID String?"
-          return
+          raise "Missing required params"
         end
 
         begin
@@ -82,7 +82,7 @@ module Corpusbuilder
       def get_document_branches(document_id)
         unless document_id.is_a? String
           Rails.logger.error "Error: Did you pass get_document_branches a document id as a UUID String?"
-          return
+          raise "Missing required params"
         end
 
         begin
@@ -98,7 +98,7 @@ module Corpusbuilder
         unless ((payload.is_a?(Hash)) && payload[:revision].present? || payload['revision'].present?) &&
                (payload[:name].present? || payload['name'].present?)
           Rails.logger.error "Error: You are missing the required param(s) to create a document branch, call create_document_branch(document_id, editor_id, revision: string, name: string)"
-          return
+          raise "Missing required params"
         end
 
         begin
@@ -116,7 +116,7 @@ module Corpusbuilder
       def merge_document_branches(document_id, branch, payload)
         unless (payload.is_a?(Hash)) && (payload[:other_branch].present? || payload['other_branch'].present?)
           Rails.logger.error "Error: You are missing the required param to merge a document branch, call merge_document_branch(document_id, branch (string), other_branch: string)"
-          return
+          raise "Missing required params"
         end
 
         begin
@@ -158,7 +158,7 @@ module Corpusbuilder
         #Check for nil instead of present in case an empty array was passed
         unless (payload.is_a?(Hash)) && (payload[:graphemes].nil? || payload['graphemes'].nil?)
           Rails.logger.error "Error: You are missing the required param(s) to add a correction to a given revision, call update_document_revision(document_id, revision_id (string), graphemes: [id: string (optional), value: string (optional), surface_number: int (optional), delete: bool (optional), area (optional): {ulx: string, uly: string, lrx: string, lry: string}])"
-          return
+          raise "Missing required params"
         end
 
         begin
@@ -173,7 +173,7 @@ module Corpusbuilder
       def create_editor(payload)
         unless (payload.is_a?(Hash)) && (payload[:email].nil? || payload['email'].nil?)
           Rails.logger.error "Error: You are missing the required param to create an editor, call create_editor(email: string, first_name: string (optional), last_name: string (optional))"
-          return
+          raise "Missing required params"
         end
 
         begin
