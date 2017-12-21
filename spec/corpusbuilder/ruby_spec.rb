@@ -65,11 +65,6 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       api.send_image(file: file, name: "test.pdf")
     end
 
-    it "prevents request to Corpusbuilder if the required param for image creation is missing" do
-      expect(Rails.logger).to receive(:error).with("Error: You are missing the required param for creating an image, call send_image(file: your_file, name: string (optional))")
-      expect(RestClient).to_not receive(:post).with(anything, anything)
-      api.send_image(name: "test.pdf")
-    end
   end
 
   ### DOCUMENTS ###
@@ -100,11 +95,6 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       api.get_document(document_id)
     end
 
-    it "prevents requesting a document if the document id was not passed in intended format" do
-      expect(Rails.logger).to receive(:error).with("Error: Did you pass get_document a document id as a UUID String?")
-      expect(RestClient).to_not receive(:get).with(anything, anything)
-      api.get_document(1)
-    end
   end
 
   context "GET /api/documents/:id/status" do 
@@ -120,11 +110,6 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       api.get_document_status(document_id)
     end
 
-    it "prevents request to get document status if document id is not passed" do
-      expect(Rails.logger).to receive(:error).with("Error: Did you pass get_document_status a document id as a UUID String?")
-      expect(RestClient).to_not receive(:get).with(anything, anything)
-      api.get_document_status(1)
-    end
   end
 
   context "GET /api/documents/:id/branches" do 
@@ -140,11 +125,6 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       api.get_document_branches(document_id)
     end
 
-    it "prevents request to get document branches if document id is not passed" do
-      expect(Rails.logger).to receive(:error).with("Error: Did you pass get_document_branches a document id as a UUID String?")
-      expect(RestClient).to_not receive(:get).with(anything, anything)
-      api.get_document_branches(1)
-    end
   end
 
   context "POST /api/documents" do 
@@ -181,11 +161,6 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       api.create_document(full_document_params)
     end
 
-    it "prevents requesting to create a document if the min. required params are missing" do
-      expect(Rails.logger).to receive(:error).with("Error: You are missing the required param(s) for creating a document, call create_document({images: [{id: UUID string},{id: UUID string...}], metadata: {title: string, author: string (optional), date: date (optional), editor: string (optional), license: string (optional), notes: string (optional), publisher: string (optional)}, editor_email: string})")
-      expect(RestClient).to_not receive(:post).with(anything, anything, anything)
-      api.create_document(data_minimal_correct)
-    end
   end
 
   context "POST /api/documents/:id/branches" do 
@@ -221,11 +196,6 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       api.create_document_branch(document_id, editor_id, params)
     end
 
-    it "prevents making a request to create a document branch unless the required params are sent" do
-      expect(Rails.logger).to receive(:error).with("Error: You are missing the required param(s) to create a document branch, call create_document_branch(document_id, editor_id, revision: string, name: string)")
-      expect(RestClient).to_not receive(:post).with(anything, anything, anything)
-      api.create_document_branch(document_id, editor_id, name: "test.pdf")
-    end
   end
 
   context "PUT /api/documents/:id/:branch/merge" do
@@ -250,11 +220,6 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       api.merge_document_branches(document_id, branch, params)
     end
 
-    it "prevents request to Corpusbuilder if the required param(s) for merging a document's branch are missing" do
-      expect(Rails.logger).to receive(:error).with("Error: You are missing the required param to merge a document branch, call merge_document_branch(document_id, branch (string), other_branch: string)")
-      expect(RestClient).to_not receive(:put).with(anything, anything, anything)
-      api.merge_document_branches(document_id, branch, 1)
-    end
   end
 
   context "Get /api/documents/:id/:revision/tree" do
@@ -345,12 +310,6 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       api.update_document_revision(document_id, revision_id, params)
     end
 
-    it "prevents requests to Corpusbuilder if the required param(s) for updating a document's revision are missing" do
-      expect(Rails.logger).to receive(:error).with("Error: You are missing the required param(s) to add a correction to a given revision, call update_document_revision(document_id, revision_id (string), graphemes: [id: string (optional), value: string (optional), surface_number: int (optional), delete: bool (optional), area (optional): {ulx: string, uly: string, lrx: string, lry: string}])")
-      expect(RestClient).to_not receive(:put).with(anything, anything, anything)
-      api.update_document_revision(document_id, revision_id, 1)
-    end
-
   end
   ### EDITORS ### 
   context "POST /api/editors" do 
@@ -380,10 +339,5 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       api.create_editor(full_editor_params)
     end
 
-    it "prevetns requests to Corpusbuilder for editor creation if the required param is not passed" do
-      expect(Rails.logger).to receive(:error).with("Error: You are missing the required param to create an editor, call create_editor(email: string, first_name: string (optional), last_name: string (optional))")
-      expect(RestClient).to_not receive(:post).with(anything, anything)
-      api.create_editor("This is does not send a required param")
-    end
   end
 end
