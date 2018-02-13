@@ -17,11 +17,12 @@ class ProxyController < ApplicationController
       result = resp.body
       resulting_status = resp.code
     rescue => e
-      Rails.logger.error "#{e.message} - #{e.class.to_s}"
       if e.respond_to?(:response)
+        Rails.logger.error "#{e.message} - #{e.class.to_s}"
         result = e.response.body
         resulting_status = e.response.code
       else
+        Rails.logger.error "An error ocurred"
         resulting_status = 500
       end
     end
