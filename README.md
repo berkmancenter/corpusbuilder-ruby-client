@@ -30,6 +30,9 @@ Add some information to a configuration file (after application is initialized):
 * Corpusbuilder::Ruby::Api.config.api_version = 1
 * Corpusbuilder::Ruby::Api.config.app_id = "your app id"
 * Corpusbuilder::Ruby::Api.config.token = "your token"
+* Corpusbuilder::Ruby::Api.config.editor_id = -> (controller) {
+  controller.current_user.try(:cb_editor_id)
+}
 
 Create a Corpusbuilder::Ruby::Api instance
 * $ api = Corpusbuilder::Ruby::Api.new

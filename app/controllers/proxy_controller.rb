@@ -8,6 +8,9 @@ class ProxyController < ApplicationController
     payload = params.has_key?("_json") ? JSON.parse(params["_json"]) : params
 
     begin
+      payload.delete('controller')
+      payload.delete('action')
+      payload.delete('path')
       resp = RestClient::Request.execute(
         method: env["REQUEST_METHOD"].downcase,
         url: url,
@@ -40,5 +43,4 @@ class ProxyController < ApplicationController
       Corpusbuilder::Ruby::Api.new.headers.merge("X-Editor-Id" => editor_id)
     end
   end
-
 end
