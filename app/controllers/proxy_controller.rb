@@ -7,6 +7,10 @@ class ProxyController < ApplicationController
     url = Corpusbuilder::Ruby::Api.config.api_url + '/api' + request.original_url.split("api")[1]
     payload = params.has_key?("_json") ? JSON.parse(params["_json"]) : params
 
+    payload.delete "controller"
+    payload.delete "action"
+    payload.delete "path"
+
     begin
       resp = RestClient::Request.execute(
         method: env["REQUEST_METHOD"].downcase,

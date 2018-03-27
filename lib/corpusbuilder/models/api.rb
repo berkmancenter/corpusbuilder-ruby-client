@@ -91,7 +91,6 @@ module Corpusbuilder
 
       def create_editor(payload)
         insert("/api/editors", payload)
-        JSON.parse(resp.body)
       end
 
       def headers
