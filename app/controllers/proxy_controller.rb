@@ -1,8 +1,8 @@
 class ProxyController < ApplicationController
+  include ActionController::Live
 
   def speak_with_cb
-    result = {}
-    resulting_status = 200
+    response.headers['Content-Type'] = 'application/json; charset=utf-8'
 
     url = Corpusbuilder::Ruby::Api.config.api_url + '/api' + request.original_url.split("api")[1]
     payload = params.has_key?("_json") ? JSON.parse(params["_json"]) : params
@@ -12,25 +12,36 @@ class ProxyController < ApplicationController
     payload.delete "path"
 
     begin
-      resp = RestClient::Request.execute(
+      handle_response = -> (res) {
+        response.status = res.code
+
+        res.read_body do |segment|
+          response.stream.write segment
+        end
+      }
+
+      RestClient::Request.execute(
         method: env["REQUEST_METHOD"].downcase,
         url: url,
         payload: payload,
-        headers: proxy_headers
+        headers: proxy_headers,
+        timeout: 180,
+        block_response: handle_response
       )
-      result = resp.body
-      resulting_status = resp.code
     rescue => e
       Rails.logger.error "#{e.message} - #{e.class.to_s}"
+      result = ""
+      resulting_status = 500
+
       if e.respond_to?(:response)
         result = e.response.body
         resulting_status = e.response.code
-      else
-        resulting_status = 500
       end
-    end
 
-    render json: result, status: resulting_status
+      render json: result, status: resulting_status
+    ensure
+      response.stream.close
+    end
   end
 
   private
