@@ -17,9 +17,7 @@ module Corpusbuilder
       end
 
       def update(url, payload, _headers = headers)
-        resp = RestClient.put(Corpusbuilder::Ruby::Api.config.api_url + "/api/documents/#{document_id}/#{branch}/merge",
-                              payload,
-                              _headers)
+        resp = RestClient.put(Corpusbuilder::Ruby::Api.config.api_url + url, payload, _headers)
         JSON.parse(resp.body)
       end
 

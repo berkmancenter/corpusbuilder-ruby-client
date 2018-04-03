@@ -34,34 +34,35 @@ Add some information to a configuration file (after application is initialized):
 Create a Corpusbuilder::Ruby::Api instance
 * $ api = Corpusbuilder::Ruby::Api.new
 
-* api.send_image(params) = Makes request to /api/images 
+* api.send_image(params) = Makes request to /api/images
+  where params = {file: file, name: string} 
 * api.create_editor(params) = Makes request to /api/editor
+  where params = {email: string, first_name: string, last_name: string}
 
 * api.create_document(params) = Makes request to /api/documents
-* api.get_document_status(params) = Makes request to /api/documents/:id/status
-* api.get_document_branches(params) = Makes request to /api/documents/:id/branches
-* api.get_document(params) = Makes request to /api/documents
+  where params = {images: [{id: UUID string},{id: UUID string}], metadata: {title: string, author: string, date: date, editor: string, license: string, notes: string, publisher: string}, editor_email: string}
+* api.get_document_status(document_id) = Makes request to /api/documents/:id/status
+* api.get_document_branches(document_id) = Makes request to /api/documents/:id/branches
+* api.get_document(document_id) = Makes request to /api/documents
 * api.get_documents = Makes request to /api/documents
 
 * api.create_document_branch(document_id, editor_id, {"revision":"your_current_branch", "name":"your_new_branch"}) = Makes request to /api/documents/:id/branches 
-  The editor_id must be created in a Corpusbuilder, then passed to the create_document_branch function from the
-  Gem's host application
 * api.merge_document_branches(document_id, current_branch_name, {"other_branch":"your_other_branch"}) = Makes request to /api/documents/:id/:branch/merge
-* api.get_document_revision_tree(document_id, revision_id or branch name, optional params) where
-  optional_params = {surface_number: int, area: {ulx: int, uly: int, lrx: int, lry: int}}
-* api.get_document_revision_diff(document_id, revision_id, optional params) where
-  optional_params = {other_revision: string}}
-* api.update_document_revision(document_id, revision_id, optional params) where
-  optional_params =       { graphemes: [ id: string,
-                                      value: string,
-                             surface_number: int,
-                                     delete: boolean,
-                                       area: { ulx: string,
-                                               uly: string,
-                                               lrx: string,
-                                               lry: string
-                                             }
-                                       ]
+* api.get_document_revision_tree(document_id, revision_id or branch name, optional params)
+  where optional_params = {surface_number: int, area: {ulx: int, uly: int, lrx: int, lry: int}}
+* api.get_document_revision_diff(document_id, revision_id, optional params)
+  where optional_params = {other_revision: string}}
+* api.update_document_revision(document_id, revision_id, optional params)
+  where optional_params = { graphemes: [ id: string,
+                                value: string,
+                       surface_number: int,
+                               delete: boolean,
+                                 area: { ulx: string,
+                                         uly: string,
+                                         lrx: string,
+                                         lry: string
+                                       }
+                                 ]
                           } 
 
 ## Development

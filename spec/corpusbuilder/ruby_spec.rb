@@ -64,6 +64,7 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       expect(RestClient).to receive(:post).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything, anything).and_return resp
       api.send_image(file: file, name: "test.pdf")
     end
+
   end
 
   ### DOCUMENTS ###
@@ -93,6 +94,7 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       expect(RestClient).to receive(:get).with(anything, headers).and_return resp
       api.get_document(document_id)
     end
+
   end
 
   context "GET /api/documents/:id/status" do 
@@ -107,6 +109,7 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       expect(RestClient).to receive(:get).with(anything, headers).and_return resp
       api.get_document_status(document_id)
     end
+
   end
 
   context "GET /api/documents/:id/branches" do 
@@ -121,6 +124,7 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       expect(RestClient).to receive(:get).with(anything, headers).and_return resp
       api.get_document_branches(document_id)
     end
+
   end
 
   context "POST /api/documents" do 
@@ -137,13 +141,14 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
                     license: "License A",
                     notes: "This is a note.",
                     publisher: "Will Williams"
-                  }.to_json
+                  }.to_json,
+        editor_email: "some_editor@editors.com"
       }
     end
 
     it "passes the intended headers for document creation" do
       expect(RestClient).to receive(:post).with(anything, anything, headers).and_return resp
-      api.create_document(data_minimal_correct)
+      api.create_document(full_document_params)
     end
 
     it "sends the required and optional params for document creation" do
@@ -153,8 +158,9 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
 
     it "requests the intended URL for document creation" do
       expect(RestClient).to receive(:post).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything, anything).and_return resp
-      api.create_document(data_minimal_correct)
+      api.create_document(full_document_params)
     end
+
   end
 
   context "POST /api/documents/:id/branches" do 
@@ -189,6 +195,7 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       expect(RestClient).to receive(:post).with(anything, anything, headers).and_return resp
       api.create_document_branch(document_id, editor_id, params)
     end
+
   end
 
   context "PUT /api/documents/:id/:branch/merge" do
@@ -212,6 +219,7 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       expect(RestClient).to receive(:put).with(anything, anything, headers).and_return resp
       api.merge_document_branches(document_id, branch, params)
     end
+
   end
 
   context "Get /api/documents/:id/:revision/tree" do
@@ -301,6 +309,7 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       expect(RestClient).to receive(:put).with(anything, anything, headers).and_return resp
       api.update_document_revision(document_id, revision_id, params)
     end
+
   end
   ### EDITORS ### 
   context "POST /api/editors" do 
@@ -324,9 +333,11 @@ RSpec.describe Corpusbuilder::Ruby::Api, type: :request do
       expect(RestClient).to receive(:post).with(anything, full_editor_params, anything).and_return resp
       api.create_editor(full_editor_params)
     end
+
     it "requests the intended URL for editor creation" do
       expect(RestClient).to receive(:post).with(Corpusbuilder::Ruby::Api.config.api_url + url, anything, anything).and_return resp
       api.create_editor(full_editor_params)
     end
+
   end
 end

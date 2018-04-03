@@ -7,6 +7,7 @@ class ProxyController < ApplicationController
     url = Corpusbuilder::Ruby::Api.config.api_url + '/api' + request.original_url.split("api")[1]
     payload = params.has_key?("_json") ? JSON.parse(params["_json"]) : params
 
+
     payload.delete "controller"
     payload.delete "action"
     payload.delete "path"
@@ -34,6 +35,7 @@ class ProxyController < ApplicationController
       resulting_status = 500
 
       if e.respond_to?(:response)
+        Rails.logger.error "#{e.message} - #{e.class.to_s}"
         result = e.response.body
         resulting_status = e.response.code
       end
