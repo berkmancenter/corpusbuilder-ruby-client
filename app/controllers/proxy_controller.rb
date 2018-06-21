@@ -22,7 +22,7 @@ class ProxyController < ApplicationController
       }
 
       RestClient::Request.execute(
-        method: env["REQUEST_METHOD"].downcase,
+        method: request.method.downcase,
         url: url,
         payload: payload,
         headers: proxy_headers,
