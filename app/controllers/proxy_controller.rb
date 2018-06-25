@@ -20,10 +20,12 @@ class ProxyController < ApplicationController
         end
       }
 
+      payload = payload.permit!.to_hash if payload.respond_to?(:permit!)
+
       RestClient::Request.execute(
         method: request.method.downcase.to_sym,
         url: url,
-        payload: payload.permit!.to_hash,
+        payload: payload,
         headers: proxy_headers,
         timeout: 180,
         block_response: handle_response
