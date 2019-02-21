@@ -73,3 +73,11 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 ## Contributing
 
 Bug reports and pull requests are welcome on GitHub at https://github.com/[USERNAME]/corpusbuilder-ruby.
+
+## License
+
+CorpusBuilder is licensed under the GNU AGPL 3.0 License.
+
+## Copyright
+
+2019 President and Fellows of Harvard College.
