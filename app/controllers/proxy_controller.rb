@@ -12,24 +12,17 @@ class ProxyController < ApplicationController
     payload.delete "path"
 
     begin
-      handle_response = -> (res) {
-        response.status = res.code
-
-        res.read_body do |segment|
-          response.stream.write segment
-        end
-      }
-
       payload = payload.permit!.to_hash if payload.respond_to?(:permit!)
 
-      RestClient::Request.execute(
+      resp = RestClient::Request.execute(
         method: request.method.downcase.to_sym,
         url: url,
         payload: payload,
         headers: proxy_headers,
         timeout: 180,
-        block_response: handle_response
       )
+
+      render json: resp.body
     rescue => e
       Rails.logger.error "#{e.message} - #{e.class.to_s} - #{e.backtrace.join("\n")}"
       result = ""
