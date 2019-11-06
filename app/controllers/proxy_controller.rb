@@ -22,7 +22,7 @@ class ProxyController < ApplicationController
         timeout: 180,
       )
 
-      render json: resp.body
+      render json: resp.body, status: resp.code
     rescue => e
       Rails.logger.error "#{e.message} - #{e.class.to_s} - #{e.backtrace.join("\n")}"
       result = ""
